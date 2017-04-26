@@ -47,8 +47,8 @@ namespace BouncingBalls
             {
                 graphics = e.Graphics;
                 
-                graphics.FillEllipse(ball1, x1, y1, ballsize,ballsize);
-                graphics.FillEllipse(ball2, x2, y2, 40, 40);
+                graphics.FillEllipse(ball1, x1, y1, ballsize, ballsize);
+                graphics.FillEllipse(ball2, x2, y2, ballsize, ballsize);
             }
             
         }
