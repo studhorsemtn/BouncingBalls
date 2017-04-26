@@ -44,7 +44,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Black;
             this.ClientSize = new System.Drawing.Size(1166, 656);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "BouncingBalls";
             this.Text = "Bouncing Balls";
             this.Click += new System.EventHandler(this.BouncingBalls_Click);
