@@ -1,0 +1,9 @@
+C:\GitHub\BouncingBalls\BouncingBalls\bin\Debug\BouncingBalls.exe.config
+C:\GitHub\BouncingBalls\BouncingBalls\bin\Debug\BouncingBalls.exe
+C:\GitHub\BouncingBalls\BouncingBalls\bin\Debug\BouncingBalls.pdb
+C:\GitHub\BouncingBalls\BouncingBalls\obj\Debug\BouncingBalls.frmBouncingBalls.resources
+C:\GitHub\BouncingBalls\BouncingBalls\obj\Debug\BouncingBalls.frmSettings.resources
+C:\GitHub\BouncingBalls\BouncingBalls\obj\Debug\BouncingBalls.Properties.Resources.resources
+C:\GitHub\BouncingBalls\BouncingBalls\obj\Debug\BouncingBalls.csproj.GenerateResource.Cache
+C:\GitHub\BouncingBalls\BouncingBalls\obj\Debug\BouncingBalls.exe
+C:\GitHub\BouncingBalls\BouncingBalls\obj\Debug\BouncingBalls.pdb
