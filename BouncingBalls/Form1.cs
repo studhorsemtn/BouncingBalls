@@ -32,7 +32,7 @@ namespace BouncingBalls
 
             for (int i = 0; i < numberOfBalls; i++)
             {
-                int size = GameTools.GetRandomNumber(10, 50);
+                int size = GameTools.GetRandomNumber(20, 50);
                 int xVelocity = GameTools.GetRandomNumber(-10, 10);
                 int yVelocity = GameTools.GetRandomNumber(-10, 10);
                 Color color = GameTools.GetRandomColor();
@@ -95,6 +95,19 @@ namespace BouncingBalls
                     velocityY = -velocityY;
                     ball.Color = GameTools.GetRandomColor();
                 }
+
+                if (ball.X == new_x1)
+                {
+                    velocityX = -velocityX;
+                }
+
+                if (ball.Y == new_y1)
+                {
+                    velocityY = -velocityY;
+                }
+
+
+
 
                 ball.Velocity = new Point(velocityX, velocityY);
 
