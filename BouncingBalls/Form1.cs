@@ -1,118 +1,117 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BouncingBalls
 {
     public partial class BouncingBalls : Form
     {
-
-
-        bool startBalls = false;
-        Random rnd = new Random();
         Graphics graphics;
-        int x1 = 0;
-        int y1 = 0;
-        int x2 = 0;
-        int y2 = 600;
-        int dx1 = 5;
-        int dy1 = 4;
-        int dx2 = 5;
-        int dy2 = 4;
-        int ballsize = 40;
-
-       
-        SolidBrush ball1 = new SolidBrush(Color.Red);
-        SolidBrush ball2 = new SolidBrush(Color.Purple);
-
-        // code added by Lyon.
-
+        List<Ball> balls;
+        System.Diagnostics.Stopwatch stopWatch;
+        long? lastTime;
+        double _delta;
 
         public BouncingBalls()
         {
             InitializeComponent();
-            this.Paint += new PaintEventHandler(paintBall);
-            this.DoubleBuffered = true;
-        }
-
-        private void paintBall(object sender, PaintEventArgs e)
-        {
-            if (startBalls)
-            {
-                graphics = e.Graphics;
-                
-                graphics.FillEllipse(ball1, x1, y1, ballsize, ballsize);
-                graphics.FillEllipse(ball2, x2, y2, ballsize, ballsize);
-            }
             
+            this.DoubleBuffered = true;
+
+            setupGame(5);
         }
 
+        private void setupGame(int numberOfBalls)
+        {
+            timer1.Enabled = false;
+
+            balls = new List<Ball>();
+            graphics = this.CreateGraphics();
+            stopWatch = new System.Diagnostics.Stopwatch();
+
+            for (int i = 0; i < numberOfBalls; i++)
+            {
+                int size = GameTools.GetRandomNumber(1, 50);
+                int xVelocity = GameTools.GetRandomNumber(-10, 10);
+                int yVelocity = GameTools.GetRandomNumber(-10, 10);
+                Color color = GameTools.GetRandomColor();
+                int x = GameTools.GetRandomNumber(0, (int)(graphics.VisibleClipBounds.Width - size));
+                int y = GameTools.GetRandomNumber(0, (int)(graphics.VisibleClipBounds.Height - size));
+
+                Ball ball = new Ball(size, size);
+                ball.Color = color;
+                ball.X = x;
+                ball.Y = y;
+                ball.Velocity = new Point(xVelocity, yVelocity);
+
+                balls.Add(ball);
+            }
+
+            stopWatch.Start();
+            timer1.Enabled = true;
+        }
+        /// <summary>
+        /// Calculate the time since the frame was last drawn. then multiply this value x the amount a ball will move. 
+        /// This is all so the ball will move based on time instead of how fast the app runs.
+        /// </summary>
+        private void calculateDelta()
+        {
+            if (lastTime == null)
+                lastTime = stopWatch.ElapsedMilliseconds;
+
+            long currentTime = stopWatch.ElapsedMilliseconds;
+            double delta = (double)((currentTime - lastTime) / 100.0);
+
+            // make sure the delta isn't an unusually high number.
+            _delta = delta < 1 ? delta : 1;
+        }
+        private void Draw()
+        {
+            graphics.Clear(Color.Black);
+
+            foreach (Ball ball in balls)
+                graphics.FillEllipse(new SolidBrush(ball.Color), ball.X, ball.Y, ball.Width, ball.Height);
+
+            graphics.Flush(System.Drawing.Drawing2D.FlushIntention.Sync);
+        }
         private void BallMove()
         {
-            Color randomColor = Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256));
-
-            int new_x1 = x1 + dx1;
-            int new_y1 = y1 + dy1;
-            int new_x2 = x2 + dx2;
-            int new_y2 = y2 + dy2;
-
-            if (new_x1 <= 0  || new_x1 > this.ClientSize.Width -40) 
+            foreach (Ball ball in balls)
             {
-                dx1 = -dx1;
-                ball1 = new SolidBrush(randomColor);
-                
+                int velocityX = ball.Velocity.X;
+                int velocityY = ball.Velocity.Y;
+                int new_x1 = ball.X + velocityX;
+                int new_y1 = ball.Y + velocityY;
+
+                if (new_x1 <= 0 || new_x1 > this.ClientSize.Width - ball.Width)
+                {
+                    velocityX = -velocityX;
+                    ball.Color = GameTools.GetRandomColor();
+                }
+
+                if (new_y1 <= 0 || new_y1 > this.ClientSize.Height - ball.Height)
+                {
+                    velocityY = -velocityY;
+                    ball.Color = GameTools.GetRandomColor();
+                }
+
+                ball.Velocity = new Point(velocityX, velocityY);
+
+                ball.X += ball.Velocity.X;
+                ball.Y += ball.Velocity.Y;
             }
-
-            if (new_y1 <= 0 || new_y1 > this.ClientSize.Height -40)
-            {
-                dy1 = -dy1;
-                ball1 = new SolidBrush(randomColor);
-            }
-
-            if (new_x2 < 0 || new_x2 > this.ClientSize.Width -40)
-            {
-                dx2 = -dx2;
-                ball2 = new SolidBrush(randomColor);
-            }
-
-            if (new_y2 < 0 || new_y2 > this.ClientSize.Height -40)
-            {
-                dy2 = -dy2;
-                ball2 = new SolidBrush(randomColor);
-            
-            }
-
-            x1 += dx1;
-            y1 += dy1;
-            x2 += dx2;
-            y2 += dy2;
-            Invalidate();
-
         }
-
-        
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            calculateDelta();
             BallMove();
+            Draw();
         }
-
         private void BouncingBalls_Click(object sender, EventArgs e)
         {
-            if (startBalls == false)
-            {
-                startBalls = true;
-            }
-            else
-            {
-                startBalls = false;
-            }
+            timer1.Enabled = !timer1.Enabled;
         }
     }
 }
