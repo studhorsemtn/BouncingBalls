@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 
+
+
 namespace BouncingBalls
 {
     public partial class BouncingBalls : Form
@@ -13,13 +15,15 @@ namespace BouncingBalls
         long? lastTime;
         double _delta;
 
+        
+
         public BouncingBalls()
         {
             InitializeComponent();
             
             this.DoubleBuffered = true;
 
-            setupGame(10);
+            setupGame(GameTools.GetRandomNumber(5, 20));
         }
 
         private void setupGame(int numberOfBalls)
@@ -33,8 +37,8 @@ namespace BouncingBalls
             for (int i = 0; i < numberOfBalls; i++)
             {
                 int size = GameTools.GetRandomNumber(20, 50);
-                int xVelocity = GameTools.GetRandomNumber(-10, 10);
-                int yVelocity = GameTools.GetRandomNumber(-10, 10);
+                int xVelocity = GameTools.GetRandomNumber(1, 10);
+                int yVelocity = GameTools.GetRandomNumber(1, 10);
                 Color color = GameTools.GetRandomColor();
                 int x = GameTools.GetRandomNumber(0, (int)(graphics.VisibleClipBounds.Width - size));
                 int y = GameTools.GetRandomNumber(0, (int)(graphics.VisibleClipBounds.Height - size));
@@ -46,7 +50,11 @@ namespace BouncingBalls
                 ball.Velocity = new Point(xVelocity, yVelocity);
 
                 balls.Add(ball);
+
+
             }
+
+            Collision(GameTools.GetRandomNumber(5, 20));
 
             stopWatch.Start();
             timer1.Enabled = true;
@@ -83,11 +91,13 @@ namespace BouncingBalls
                 int velocityY = ball.Velocity.Y;
                 int new_x1 = ball.X + velocityX;
                 int new_y1 = ball.Y + velocityY;
+                
 
                 if (new_x1 <= 0 || new_x1 > this.ClientSize.Width - ball.Width)
                 {
                     velocityX = -velocityX;
                     ball.Color = GameTools.GetRandomColor();
+                    velocityX += 2;
                 }
 
                 if (new_y1 <= 0 || new_y1 > this.ClientSize.Height - ball.Height)
@@ -96,19 +106,6 @@ namespace BouncingBalls
                     ball.Color = GameTools.GetRandomColor();
                 }
 
-                if (ball.X == new_x1)
-                {
-                    velocityX = -velocityX;
-                }
-
-                if (ball.Y == new_y1)
-                {
-                    velocityY = -velocityY;
-                }
-
-
-
-
                 ball.Velocity = new Point(velocityX, velocityY);
 
                 ball.X += ball.Velocity.X;
@@ -116,11 +113,32 @@ namespace BouncingBalls
             }
         }
 
+        public void Collision(int numberOfBalls)
+        {
+            int[] circles = new int[numberOfBalls];
+
+
+            for (int i = 0; i < numberOfBalls; i++)
+            {
+                var circle = circles[i];
+
+                for (int j = 0; j < circles.Length; j++)
+                {
+                    var other = circles[i];                          
+                }
+
+            }
+        }
+
+       
+
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             calculateDelta();
             BallMove();
             Draw();
+            
         }
         private void BouncingBalls_Click(object sender, EventArgs e)
         {
