@@ -18,7 +18,6 @@ namespace BouncingBalls
             InitializeComponent();
             
             this.DoubleBuffered = true;
-
             setupGame(GameTools.GetRandomNumber(2, 15));
         }
 
@@ -32,7 +31,7 @@ namespace BouncingBalls
 
             for (int i = 0; i < numberOfBalls; i++)
             {
-                int size = GameTools.GetRandomNumber(1, 50);
+                int size = GameTools.GetRandomNumber(10, 50);
                 int xVelocity = GameTools.GetRandomNumber(-10, 10);
                 int yVelocity = GameTools.GetRandomNumber(-10, 10);
                 Color color = GameTools.GetRandomColor();
