@@ -18,8 +18,7 @@ namespace BouncingBalls
             InitializeComponent();
             
             this.DoubleBuffered = true;
-
-            setupGame(10);
+            setupGame(GameTools.GetRandomNumber(2, 15));
         }
 
         private void setupGame(int numberOfBalls)
@@ -94,6 +93,28 @@ namespace BouncingBalls
                 {
                     velocityY = -velocityY;
                     ball.Color = GameTools.GetRandomColor();
+                }
+                //
+                // collision detection for other balls
+                //
+                foreach (Ball secondBall in balls)
+                {
+                    if (ball.Equals(secondBall))
+                        continue;
+
+                    if (ball.Rectangle.IntersectsWith(secondBall.Rectangle) || secondBall.Rectangle.IntersectsWith(ball.Rectangle))
+                    {
+                        ball.Color = GameTools.GetRandomColor();
+
+                        velocityX = -velocityX;
+                        velocityY = -velocityY;
+
+                        int velocityXForSecondBall = -secondBall.Velocity.X;
+                        int velocityYForSecondBall = -secondBall.Velocity.Y;
+
+                        secondBall.Velocity = new Point(velocityXForSecondBall, velocityYForSecondBall);
+                        secondBall.Color = GameTools.GetRandomColor();
+                    }
                 }
 
                 ball.Velocity = new Point(velocityX, velocityY);
