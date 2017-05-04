@@ -16,5 +16,12 @@ namespace BouncingBalls
         public Color Color { get; set; }
         public int X { get; set; }
         public int Y { get; set; }
+        public Rectangle Rectangle
+        {
+            get
+            {
+                return new Rectangle(this.X, this.Y, this.Width, this.Height);
+            }
+        }
     }
 }
